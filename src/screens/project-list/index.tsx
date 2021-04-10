@@ -5,8 +5,6 @@ import { List } from "./list";
 import qs from "qs"; // 将对象转换为url参数字符串
 import { cleanObject, useMount, useDebounce } from "../../utils";
 
-console.log(qs.stringify("123"));
-
 const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
 
 export const ProjectListScreen = () => {
