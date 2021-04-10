@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // 排除值为0时误认为false
-export const isFalsy = (value: any) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 // 清空对象里的空值属性
 export const cleanObject = (object: object) => {
@@ -28,7 +28,7 @@ export const useMount = (callback: () => void) => {
 };
 
 // 自定义防抖hook (非传统防抖函数)
-export const useDebounce = (value: any, delay = 800) => {
+export const useDebounce = <T>(value: T, delay = 800) => {
   const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
@@ -60,3 +60,29 @@ export const useDebounce = (value: any, delay = 800) => {
 // log()
 //   ...5s
 // 执行！
+
+// 数组操作hook
+export const useArray = <T>(initialArray: T[]) => {
+  // T是灵活可变的，根据传入参数来判定其类型
+
+  const [value, setValue] = useState(initialArray);
+
+  return {
+    value,
+    setValue,
+    clear: () => {
+      setValue([]);
+    },
+    removeIndex: (index: number) => {
+      const copy = [...value];
+      copy.splice(index, 1);
+      setValue(copy);
+
+      // setValue(value.slice().splice(index, 1)) // 不能这样写，因为splice是返回被删除的成员，而不是删除后的数组
+    },
+    add: (item: T) => {
+      // 通过结构拷贝原数组
+      setValue([...value, item]);
+    },
+  };
+};
