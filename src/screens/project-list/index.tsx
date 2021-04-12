@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import qs from "qs"; // 将对象转换为url参数字符串
+// import qs from "qs"; // 将对象转换为url参数字符串
 import { cleanObject, useMount, useDebounce } from "../../utils";
+import { useHttp } from "utils/http";
 
-const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
+// const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
 
 export const ProjectListScreen = () => {
   //  useState 类似于vue中在data定义数据
@@ -23,24 +24,29 @@ export const ProjectListScreen = () => {
   // 参数防抖
   const debouncedParam = useDebounce(param);
 
+  // http hook
+  const client = useHttp();
+
   // useEffect 每次重新渲染时会执行此钩子（挂载完成和更新完成）
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
-    ).then(async (response) => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
+    // fetch(
+    //   `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
+    // ).then(async (response) => {
+    //   if (response.ok) {
+    //     setList(await response.json());
+    //   }
+    // });
+    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
   }, [debouncedParam]); // 第2个参数(数组)表示在debouncedParam改变时才执行
 
   // 获取users数据
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (response) => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    // fetch(`${apiUrl}/users`).then(async (response) => {
+    //   if (response.ok) {
+    //     setUsers(await response.json());
+    //   }
+    // });
+    client("users").then(setUsers);
   });
 
   return (

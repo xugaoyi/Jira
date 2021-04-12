@@ -5,7 +5,7 @@ import { FormEvent } from "react";
 // const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
 
 export const LoginScreen = () => {
-  const { login, user, register } = useAuth(); // 取出：login登录事件，user登录后的用户信息
+  const { login, user } = useAuth(); // 取出：login登录事件，user登录后的用户信息
 
   // 处理登录
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
