@@ -1,22 +1,11 @@
+// 登录组件
+
 import { useAuth } from "context/auth-context";
 import { FormEvent } from "react";
-const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
+// const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
 
 export const LoginScreen = () => {
-  // 请求登录接口
-  // const login = (param: { username: string; password: string }) => {
-  //   fetch(`${apiUrl}/register`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(param),
-  //   }).then(async (response) => {
-  //     if (response.ok) {
-  //     }
-  //   });
-  // };
-  const { login, user } = useAuth();
+  const { login, user, register } = useAuth(); // 取出：login登录事件，user登录后的用户信息
 
   // 处理登录
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -24,7 +13,8 @@ export const LoginScreen = () => {
     const inputsEl = event.currentTarget.elements;
     const username = (inputsEl[0] as HTMLInputElement).value;
     const password = (inputsEl[1] as HTMLInputElement).value;
-    login({ username, password });
+    // register({ username, password }) // 注册
+    login({ username, password }); // 登录
   };
 
   return (
@@ -38,8 +28,20 @@ export const LoginScreen = () => {
         <label htmlFor="password">密码</label>
         <input type="password" id="password" />
       </div>
-      <button type="submit">注册</button>
+      <button type="submit">登录</button>
     </form>
+
+    // <form onSubmit={handleSubmit}>
+    //   <div>
+    //     <label htmlFor="username">用户名</label>
+    //     <input type="text" id="username" />
+    //   </div>
+    //   <div>
+    //     <label htmlFor="password">密码</label>
+    //     <input type="password" id="password" />
+    //   </div>
+    //   <button type="submit">注册</button>
+    // </form>
   );
 };
 

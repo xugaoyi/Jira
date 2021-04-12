@@ -1,4 +1,5 @@
 // 在真实环境中，如果使用firebase这种第三方auth服务的话，本文件不需要开发者开发
+// auth => 身份验证， provider => 提供者
 
 import { User } from "screens/project-list/search-panel";
 
@@ -45,5 +46,6 @@ export const register = (data: { username: string; password: string }) => {
   });
 };
 
+// 这里加async使其返回Promise
 export const logout = async () =>
   window.localStorage.removeItem(localStorageKey);
