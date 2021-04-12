@@ -50,7 +50,26 @@ export const http = async (
 // 函数如果里面使用到hook的话，那么这个函数必须是 函数组件 或 自定义hook 之一。
 export const useHttp = () => {
   const { user } = useAuth();
-  // TODO 讲解 TS 操作符
+  // Parameters 工具类型, 这里的typeof是TS的，属于静态环境运行的
+  // 这里的Parameters用于提取http函数内的参数的类型
   return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token });
 };
+
+// 联合类型 一个`|`(或)操作符
+// const my: string | number
+
+// 类型别名
+// type myS = string | number
+
+// 工具类型用法： 用泛型传入一个其他类型，然后对它进行某种操作并返回
+type Person = {
+  name: string;
+  age: number;
+};
+// // Partial使传入类型的属性变为可选属性
+// const xiao: Partial<Person> = {}
+// // Omit使传入类型的删除某个属性
+// const xiao2: Omit<Person, 'name'> = {age: 2}
+// const xiao3: Omit<Person, 'name' | 'age'> = {}
+type PersonKeys = keyof Person; // "name" | 'age'

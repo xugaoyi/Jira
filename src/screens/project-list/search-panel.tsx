@@ -2,6 +2,8 @@
  * 搜索面板组件
  */
 
+import { Input, Select } from "antd";
+
 export interface User {
   id: string;
   name: string;
@@ -20,12 +22,12 @@ interface SearchPanelProps {
   setParam: (param: SearchPanelProps["param"]) => void;
 }
 
-// 子组件通过函数参数接收参数（注意传入的是一个对象）
 export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
     <form>
       <div>
-        <input
+        {/*setParam(Object.assign({}, param, {name:evt.target.value}))*/}
+        <Input
           type="text"
           value={param.name}
           onChange={(evt) =>
@@ -35,23 +37,22 @@ export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
             })
           }
         />
-        <select
-          value={param.name}
-          onChange={(evt) =>
+        <Select
+          value={param.personId}
+          onChange={(value) =>
             setParam({
               ...param,
-              personId: evt.target.value,
+              personId: value,
             })
           }
         >
-          <option value={""}>负责人</option>
-          {/* 这里数组的map方法类似于vue的v-for */}
+          <Select.Option value={""}>负责人</Select.Option>
           {users.map((user) => (
-            <option value={user.id} key={user.id}>
+            <Select.Option key={user.id} value={user.id}>
               {user.name}
-            </option>
+            </Select.Option>
           ))}
-        </select>
+        </Select>
       </div>
     </form>
   );

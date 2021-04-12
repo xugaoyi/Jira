@@ -1,47 +1,37 @@
 // 登录组件
 
 import { useAuth } from "context/auth-context";
-import { FormEvent } from "react";
+import { Button, Form, Input } from "antd";
 // const apiUrl = process.env.REACT_APP_API_URL; // 读取环境变量参数
 
 export const LoginScreen = () => {
-  const { login, user } = useAuth(); // 取出：login登录事件，user登录后的用户信息
+  const { login } = useAuth(); // 取出：login登录事件，user登录后的用户信息
 
   // 处理登录
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // 阻止默认事件
-    const inputsEl = event.currentTarget.elements;
-    const username = (inputsEl[0] as HTMLInputElement).value;
-    const password = (inputsEl[1] as HTMLInputElement).value;
-    // register({ username, password }) // 注册
-    login({ username, password }); // 登录
+  const handleSubmit = (values: { username: string; password: string }) => {
+    login(values);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {user ? <div>登录成功，用户名： {user.name}</div> : null}
-      <div>
-        <label htmlFor="username">用户名</label>
-        <input type="text" id="username" />
-      </div>
-      <div>
-        <label htmlFor="password">密码</label>
-        <input type="password" id="password" />
-      </div>
-      <button type="submit">登录</button>
-    </form>
-
-    // <form onSubmit={handleSubmit}>
-    //   <div>
-    //     <label htmlFor="username">用户名</label>
-    //     <input type="text" id="username" />
-    //   </div>
-    //   <div>
-    //     <label htmlFor="password">密码</label>
-    //     <input type="password" id="password" />
-    //   </div>
-    //   <button type="submit">注册</button>
-    // </form>
+    <Form onFinish={handleSubmit}>
+      <Form.Item
+        name={"username"}
+        rules={[{ required: true, message: "请输入用户名" }]}
+      >
+        <Input placeholder={"用户名"} type="text" id={"username"} />
+      </Form.Item>
+      <Form.Item
+        name={"password"}
+        rules={[{ required: true, message: "请输入密码" }]}
+      >
+        <Input placeholder={"密码"} type="password" id={"password"} />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType={"submit"} type={"primary"}>
+          登录
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 
